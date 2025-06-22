@@ -205,8 +205,25 @@ public class VehicleController {
     }
 
     @PostMapping("admin/vehicle/delete")
-    public String deleteVehiclePost(@ModelAttribute("newVehicle") Vehicle vehicle1) {
-        this.vehicleService.deleteVehicleById(vehicle1.getBienSoXe());
+    public String deleteVehiclePost(@ModelAttribute("newVehicle") Vehicle vehicle1,
+            RedirectAttributes redirectAttributes) {
+        String bienSoXe = vehicle1.getBienSoXe();
+        Optional<Vehicle> vehicleOpt = vehicleService.getVehicleById(bienSoXe);
+        if (!vehicleOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy xe với biển số " + bienSoXe);
+            return "redirect:/admin/vehicle";
+        }
+
+        // Check for dependencies
+        String dependencyError = vehicleService.checkDependencies(bienSoXe);
+        if (dependencyError != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", dependencyError);
+            return "redirect:/admin/vehicle";
+        }
+
+        // Proceed with deletion if no dependencies
+        vehicleService.deleteVehicleById(bienSoXe);
+        redirectAttributes.addFlashAttribute("successMessage", "Xóa xe thành công!");
         return "redirect:/admin/vehicle";
     }
 

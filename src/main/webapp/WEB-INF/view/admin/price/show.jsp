@@ -57,8 +57,8 @@
                                                             <td>
                                                                 <a href="/admin/price/update/${bangGia.maBangGia}"
                                                                     class="btn btn-warning mx-2">Update</a>
-                                                                <a href="/admin/price/delete/${bangGia.maBangGia}"
-                                                                    class="btn btn-danger">Delete</a>
+                                                                <!-- <a href="/admin/price/delete/${bangGia.maBangGia}"
+                                                                    class="btn btn-danger">Delete</a> -->
                                                             </td>
                                                         </tr>
                                                     </c:forEach>

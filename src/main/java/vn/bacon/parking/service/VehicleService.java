@@ -87,4 +87,15 @@ public class VehicleService {
     public Page<Vehicle> getVehiclesWithStudent(Pageable pageable) {
         return vehicleRepository.findByMaSVIsNotNull(pageable);
     }
+
+    // to check dependencies
+    public String checkDependencies(String bienSoXe) {
+        if (vehicleRepository.hasEntryExitDetails(bienSoXe)) {
+            return "Xe này không thể xóa vì đã có lịch sử vào/ra trong hệ thống.";
+        }
+        if (vehicleRepository.hasRegisterMonth(bienSoXe)) {
+            return "Xe này không thể xóa vì đã có đăng ký tháng trong hệ thống.";
+        }
+        return null; // No dependencies found
+    }
 }
